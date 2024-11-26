@@ -16,7 +16,7 @@ function AppContent() {
 
   return (
     <Router>
-      <div className="min-h-screen h-full" style={{backgroundColor: themeColors.bgApp}}>
+      <div className='overflow-scroll' style={{backgroundColor: themeColors.bgApp, height: '100vh'}}>
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/Formulaire" element={<Formulaire />} />
