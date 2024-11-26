@@ -26,7 +26,7 @@ export const PalettePopup = ({ onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div 
-        className="absolute inset-0 bg-black bg-opacity-50"
+        className="absolute inset-0 bg-black bg-opacity-50 overflow-scroll scrollbar-hide"
         onClick={onClose}
       ></div>
       
