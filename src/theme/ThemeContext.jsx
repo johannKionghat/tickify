@@ -23,6 +23,7 @@ export const ThemeProvider = ({ children }) => {
   }, []);
 
   const updateThemeColors = (themeIndex) => {
+    // Update the themeColors object with the new palette
     Object.keys(palette[themeIndex]).forEach(key => {
       themeColors[key] = palette[themeIndex][key];
     });
@@ -30,8 +31,9 @@ export const ThemeProvider = ({ children }) => {
     setThemeUpdate(prev => prev + 1); // Force update
   };
 
+  // Provide both themeColors and updateTheme function
   return (
-    <ThemeContext.Provider value={{ updateTheme: updateThemeColors, themeUpdate }}>
+    <ThemeContext.Provider value={{ themeColors, updateTheme: updateThemeColors, themeUpdate }}>
       {children}
     </ThemeContext.Provider>
   );

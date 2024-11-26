@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { ElementPlusLinear, SearchNormal1Linear } from 'react-iconsax-icons';
 import { Link } from 'react-router-dom';
-import { themeColors } from '../theme';
 import { useTheme } from '../theme/ThemeContext';
 
 export const SearchBar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const { themeUpdate } = useTheme();
+  const { themeColors } = useTheme();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,4 +41,5 @@ export const SearchBar = ({ onSearch }) => {
     </form>
   );
 };
+
 

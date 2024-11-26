@@ -1,22 +1,26 @@
 import './App.css';
 import React from 'react';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import { Dashboard } from './screens/Dashboard';
-import { Checklist } from './screens/Checklist';
-import { Formulaire } from './screens/Formulaire';
-import { themeColors } from './theme';
-import { ThemeProvider, useTheme } from './theme/ThemeContext';
+import { 
+  BrowserRouter as Router, 
+  Routes, 
+  Route
+} from 'react-router-dom';
+import { useTheme } from './theme/ThemeContext';
+import Dashboard from './screens/Dashboard';
+import Formulaire from './screens/Formulaire';
+import Checklist from './screens/Checklist';
+import { ThemeProvider } from './theme/ThemeContext';
 
 function AppContent() {
-  const { themeUpdate } = useTheme();
-  
+  const { themeColors } = useTheme();
+
   return (
     <Router>
       <div className="min-h-screen h-full" style={{backgroundColor: themeColors.bgApp}}>
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/Checklist" element={<Checklist />} />
           <Route path="/Formulaire" element={<Formulaire />} />
+          <Route path="/Checklist" element={<Checklist />} />
         </Routes>
       </div>
     </Router>

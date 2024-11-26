@@ -3,13 +3,12 @@ import { FilterSearchLinear, Setting4Linear } from 'react-iconsax-icons'
 import { Link } from 'react-router-dom'
 import { FilterPopup } from './FilterPopup';
 import { PalettePopup } from './PalettePopup';
-import { themeColors } from '../theme';
 import { useTheme } from '../theme/ThemeContext';
 
 export default function Nav({ sortOrder, setSortOrder, statusFilter, setStatusFilter }) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
-  const { themeUpdate } = useTheme();
+  const { themeColors } = useTheme();
 
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);

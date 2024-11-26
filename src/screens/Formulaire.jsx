@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import NavFormulaire from '../components/NavFormulaire';
 import { CalendarLinear, DirectInboxLinear, AddSquareLinear, TrashLinear } from 'react-iconsax-icons';
@@ -7,7 +7,7 @@ import { themeColors } from '../theme';
 import { addChecklist, updateChecklist } from '../data/apiFunctions';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-export const Formulaire = () => {
+export default function Formulaire() {
   const location = useLocation();
   const { checklist, Linktasks = [] } = location.state || {};
   const isEditMode = !!checklist;

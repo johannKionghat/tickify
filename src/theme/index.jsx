@@ -190,6 +190,10 @@ const paletteData = [
 
 export const palette = paletteData;
 
+// Initialize themeColors with the default theme (first palette)
+const savedThemeIndex = localStorage.getItem('selectedThemeIndex');
+const initialThemeIndex = savedThemeIndex ? parseInt(savedThemeIndex) : 0;
+
 export const themeColors = {
-    ...palette[0],
+    ...palette[initialThemeIndex]
 };

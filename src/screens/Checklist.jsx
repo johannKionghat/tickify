@@ -6,7 +6,7 @@ import { CalendarLinear, MagicpenBold, StatusLinear, Note2Broken, ReceiptTextLin
 import { themeColors } from '../theme';
 import { updateChecklist } from '../data/apiFunctions';
 
-export const Checklist = () => {
+export default function Checklist() {
   const location = useLocation();
   const { checklist } = location.state || {};
   const [tasks, setTasks] = useState(location.state?.tasks || []);

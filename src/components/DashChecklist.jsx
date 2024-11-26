@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { EmojiSadLinear, MagicpenLinear, MoreSquareLinear, ReceiptAddLinear, StatusLinear, TickCircleLinear, TickSquareBold, TrashLinear } from 'react-iconsax-icons';
-import { themeColors } from '../theme';
+import { EmojiSadLinear, MagicpenLinear, ReceiptAddLinear, StatusLinear, TickCircleLinear, TrashLinear } from 'react-iconsax-icons';
 import { useTheme } from '../theme/ThemeContext';
 import { deleteChecklist, getAllChecklists } from '../data/apiFunctions';
 import { ToastContainer, toast } from 'react-toastify';
@@ -14,9 +13,7 @@ export default function DashChecklist({ sortOrder, statusFilter, searchTerm }) {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [checklistToDelete, setChecklistToDelete] = useState(null);
   const [DataChecklist, setDataChecklist] = useState([]);
-  const { themeUpdate } = useTheme();
-
-
+  const { themeColors } = useTheme();
 
   const notifySuccess = () => toast.success('Checklist deleted with success');
   const notifyError =  () => toast.error('Error deleting checklist');
@@ -44,6 +41,7 @@ export default function DashChecklist({ sortOrder, statusFilter, searchTerm }) {
         if (statusFilter === 'done') return tasks.length > 0 && completedTasks.length === tasks.length;
         if (statusFilter === 'inProgress') return tasks.length > 0 && completedTasks.length < tasks.length;
         if (statusFilter === 'Empty') return tasks.length === 0;
+        return false; // Default return for filter callback
       });
     }
     result.sort((a, b) => {

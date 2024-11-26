@@ -3,7 +3,7 @@ import Nav from '../components/Nav';
 import { SearchBar } from '../components/SearchBar';
 import DashChecklist from '../components/DashChecklist';
 
-export const Dashboard = () => {
+export default function Dashboard() {
   const [sortOrder, setSortOrder] = useState('asc');
   const [statusFilter, setStatusFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
