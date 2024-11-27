@@ -138,7 +138,7 @@ export default function DashChecklist({ sortOrder, statusFilter, searchTerm }) {
                   <motion.div
                     key={item.id}
                     className="rounded shadow-sm p-2 overflow-hidden"
-                    style={{ width: 179, backgroundColor: bgColor, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)' }}
+                    style={{ width: 155, backgroundColor: bgColor, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)' }}
                     variants={itemVariants}
                   >
                     <div className="font-bold text-nowrap overflow-hidden" style={{ fontSize: 15, width: 100, color:themeColors.textLight }}>
