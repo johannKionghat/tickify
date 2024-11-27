@@ -197,7 +197,10 @@ export default function DashChecklist({ sortOrder, statusFilter, searchTerm }) {
                         style={{ fontSize: 7, color: themeColors.primary, backgroundColor: themeColors.bgbutton1 }}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        onClick={() => setChecklistToDelete(item.id)}
+                        onClick={() => {
+                          setChecklistToDelete(item.id);
+                          setShowConfirmation(true);
+                        }}
                       >
                         <TrashLinear size="15" color={themeColors.primary} />
                       </motion.p>
@@ -222,7 +225,7 @@ export default function DashChecklist({ sortOrder, statusFilter, searchTerm }) {
           {/* Popup de confirmation */}
           {showConfirmation && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-              <div className={`bg-[${themeColors.popupBackground}] p-4 rounded-lg shadow-lg`} style={{backgroundColor:themeColors.statusEmpty, opacity:0.9, width:300}}>
+              <div className={`bg-[${themeColors.popupBackground}] p-4 rounded-lg shadow-lg`} style={{backgroundColor:themeColors.statusEmpty, color:themeColors.primary, opacity:0.9, width:300}}>
                 <p>Do you want to delete this checklist?</p>
                 <div className="flex justify-end mt-4">
                   <button
