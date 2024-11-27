@@ -11,7 +11,6 @@ import {
   TaskSquareLinear,
   Timer1Linear
 } from 'react-iconsax-icons';
-import NavChecklist from './NavChecklist';
 import { createUserProfile, updateUserProfile, getUserProfile, getChecklists } from '../firebase/firestore';
 import {
   Chart as ChartJS,
