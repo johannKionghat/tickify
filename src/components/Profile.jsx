@@ -64,7 +64,6 @@ export default function Profile() {
                 if (profile) {
                     setDisplayName(profile.displayName || '');
                     setPhotoURL(profile.photoURL || '');
-                    setProfileData(profile);
                 } else {
                     await createUserProfile({
                         displayName: user.displayName || '',
@@ -108,7 +107,6 @@ export default function Profile() {
 
                 setStatistics(stats);
             } catch (err) {
-                setError('Failed to load user data');
                 console.error('Error loading data:', err);
             }
             setLoading(false);
@@ -172,8 +170,6 @@ export default function Profile() {
     async function handleSubmit(e) {
         e.preventDefault();
         try {
-            setError('');
-            setSuccess('');
             setLoading(true);
 
             await updateUserProfile({
@@ -181,10 +177,8 @@ export default function Profile() {
                 photoURL
             });
 
-            setSuccess('Profile updated successfully!');
             setIsEditing(false);
         } catch (err) {
-            setError('Failed to update profile');
             console.error('Error updating profile:', err);
         } finally {
             setLoading(false);
@@ -196,7 +190,7 @@ export default function Profile() {
             await logout();
             navigate('/login');
         } catch (err) {
-            setError('Failed to log out');
+            console.error('Error logging out:', err);
         }
     }
 
