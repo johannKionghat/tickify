@@ -10,8 +10,7 @@ import {
   query,
   where,
   serverTimestamp,
-  writeBatch,
-  Timestamp
+  writeBatch
 } from 'firebase/firestore';
 
 // Convert Firestore timestamp to readable format
