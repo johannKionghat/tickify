@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { EmojiSadLinear, MagicpenLinear, ReceiptAddLinear, StatusLinear, TickCircleLinear, TrashLinear } from 'react-iconsax-icons';
 import { useTheme } from '../theme/ThemeContext';
-import { deleteChecklist, getAllChecklists } from '../data/apiFunctions';
+import { getChecklists, deleteChecklist } from '../firebase/firestore';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -15,13 +15,17 @@ export default function DashChecklist({ sortOrder, statusFilter, searchTerm }) {
   const [DataChecklist, setDataChecklist] = useState([]);
   const { themeColors } = useTheme();
 
-  const notifySuccess = () => toast.success('Checklist deleted with success');
-  const notifyError =  () => toast.error('Error deleting checklist');
+  const notifySuccess = () => toast.success('Checklist deleted successfully');
+  const notifyError = () => toast.error('Error deleting checklist');
+
   const fetchChecklists = useCallback(async () => {
     try {
-      const response = await getAllChecklists();
-      setDataChecklist(response.data.response);
+      const checklists = await getChecklists();
+      setDataChecklist(checklists);
+      setIsChecklist(checklists.length > 0);
     } catch (error) {
+      console.error('Error fetching checklists:', error);
+      setIsChecklist(false);
     }
   }, []);
 
@@ -59,27 +63,22 @@ export default function DashChecklist({ sortOrder, statusFilter, searchTerm }) {
     applyFilters();
   }, [applyFilters, DataChecklist, sortOrder, statusFilter, searchTerm]);
 
-  const handleDelete = (id) => {
-    setChecklistToDelete(id);
-    setShowConfirmation(true);
-  };
-  
-  const confirmDelete = async () => {
+  const handleDelete = async (checklistId) => {
     try {
-      await deleteChecklist(checklistToDelete);
-      setFilteredChecklists(prevChecklists =>
-        prevChecklists.filter(checklist => checklist.id !== checklistToDelete)
-      );
+      await deleteChecklist(checklistId);
+      notifySuccess();
+      fetchChecklists(); // Refresh the list
       setShowConfirmation(false);
-      setChecklistToDelete(null);
-      notifySuccess('Checklist deleted with success');
     } catch (error) {
-      setShowConfirmation(false);
-      notifyError('Error deleting checklist');
-      console.error('Erreur lors de la suppression de la checklist:', error);
-      // Ajoutez ici une gestion d'erreur appropriée, par exemple un message d'erreur pour l'utilisateur
+      console.error('Error deleting checklist:', error);
+      notifyError();
     }
   };
+
+  const confirmDelete = async () => {
+    await handleDelete(checklistToDelete);
+  };
+
   const containerVariants = {
     hidden: { opacity: 1 },
     visible: {
@@ -90,7 +89,7 @@ export default function DashChecklist({ sortOrder, statusFilter, searchTerm }) {
       }
     }
   };
-  
+
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
@@ -103,7 +102,7 @@ export default function DashChecklist({ sortOrder, statusFilter, searchTerm }) {
       }
     }
   };
-  
+
   if (isChecklist) {
     return (
       <div className="mx-auto px-3 py-3 " >
@@ -198,7 +197,7 @@ export default function DashChecklist({ sortOrder, statusFilter, searchTerm }) {
                         style={{ fontSize: 7, color: themeColors.primary, backgroundColor: themeColors.bgbutton1 }}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        onClick={() => handleDelete(item.id)}
+                        onClick={() => setChecklistToDelete(item.id)}
                       >
                         <TrashLinear size="15" color={themeColors.primary} />
                       </motion.p>

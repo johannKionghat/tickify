@@ -4,7 +4,7 @@ import NavChecklist from '../components/NavChecklist';
 import { Link, useLocation } from 'react-router-dom';
 import { CalendarLinear, MagicpenBold, StatusLinear, Note2Broken, ReceiptTextLinear, TickCircleBold, TickCircleLinear } from 'react-iconsax-icons';
 import { themeColors } from '../theme';
-import { updateChecklist } from '../data/apiFunctions';
+import { updateTaskStatus } from '../firebase/firestore';
 
 export default function Checklist() {
   const location = useLocation();
@@ -38,7 +38,8 @@ export default function Checklist() {
       const updatedTasks = tasks.map(task => 
         task.id === taskId ? { ...task, statut: task.statut === 0 ? 1 : 0 } : task
       );
-      await updateChecklist(checklist.id, checklist.title, checklist.description, updatedTasks);
+      
+      await updateTaskStatus(checklist.id, taskId, updatedTasks.find(t => t.id === taskId).statut);
       setTasks(updatedTasks);
     } catch (error) {
       console.error('Error updating task status:', error);
@@ -129,8 +130,8 @@ export default function Checklist() {
           </div>
         </motion.div>
         <motion.div 
-          className='rounded-md my-5 p-3 font-bold'
-          style={{height:100, color:themeColors.bgbutton1, backgroundColor:themeColors.primary}}
+          className= ' rounded-md my-5 p-3 font-bold overflow-scroll scrollbar-hide'
+          style={{height:100, color:themeColors.bgbutton1, backgroundColor:themeColors.primary,}}
           variants={itemVariants}
         >
           {checklist.description}...

@@ -4,9 +4,10 @@ import NavFormulaire from '../components/NavFormulaire';
 import { CalendarLinear, DirectInboxLinear, AddSquareLinear, TrashLinear } from 'react-iconsax-icons';
 import { useLocation } from 'react-router-dom';
 import { themeColors } from '../theme';
-import { addChecklist, updateChecklist } from '../data/apiFunctions';
+import { createChecklist, updateChecklist } from '../firebase/firestore';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 export default function Formulaire() {
   const location = useLocation();
   const { checklist, Linktasks = [] } = location.state || {};
@@ -20,20 +21,21 @@ export default function Formulaire() {
 
   const handleSubmit = async (e) => {
     const notifySuccess = (message) => toast.success(message);
-    const notifyError =  (message) => toast.error(message);
+    const notifyError = (message) => toast.error(message);
     e.preventDefault();
+    
     try {
       if (isEditMode) {
-        await updateChecklist(checklist.id,  title, description, tasks );
-        notifySuccess('Checklist updated with success !');
+        await updateChecklist(checklist.id, title, description, tasks);
+        notifySuccess('Checklist updated successfully!');
       } else {
-        await addChecklist(title, description, tasks );
-        notifySuccess('Checklist created with success !');
+        await createChecklist(title, description, tasks);
+        notifySuccess('Checklist created successfully!');
       }
-      // Réinitialiser le formulaire ou rediriger l'utilisateur
+      // Reset form or redirect user
     } catch (error) {
       console.error(`Error while ${isEditMode ? "updating" : "adding"} the checklist:`, error);
-      notifyError(`Error while ${isEditMode ? "updating" : "adding"} the checklist:`, error);
+      notifyError(`Error while ${isEditMode ? "updating" : "adding"} the checklist. Please try again.`);
     }
   };
   
