@@ -56,7 +56,7 @@ const paletteData = [
         bgApp: '#F3F6F8', // Fond de l'application (gris clair)
 
         statusEmpty: '#CCCCCC', // Statut "Empty" (gris neutre)
-        statusDone: '#0077B5', // Statut "Done" (bleu LinkedIn)
+        statusDone: '#000000', // Statut "Done" (bleu LinkedIn)
         statusInProgress: '#005582', // Statut "In Progress" (bleu plus sombre)
 
         textLight: '#FFFFFF', // Texte clair (pour fond bleu)
@@ -79,8 +79,8 @@ const paletteData = [
         bgbutton1: '#F2F2F2', // Fond des boutons (vert moyen)
         bgApp: '#ECE5DD', // Fond de l'application (gris clair/beige)
 
-        statusEmpty: '#ECE5DD', // Statut "Empty" (beige clair)
-        statusDone: '#25D366', // Statut "Done" (vert WhatsApp)
+        statusEmpty: '#0CE5DD', // Statut "Empty" (beige clair)
+        statusDone: '#ECE5DD', // Statut "Done" (vert WhatsApp)
         statusInProgress: '#128C7E', // Statut "In Progress" (vert foncé)
 
         textLight: '#FFFFFF', // Texte clair (pour fond vert)
@@ -152,7 +152,7 @@ const paletteData = [
         bgbutton1: '#FFBD69',
         bgApp: '#F5F5DC', // Beige
         statusEmpty: '#C0C0C0',
-        statusDone: '#FF6F61',
+        statusDone: '#020202',
         statusInProgress: '#FFA500',
         textLight: '#FFFFFF',
         textDark: '#2C2C2C',
@@ -170,7 +170,7 @@ const paletteData = [
         bgbutton1: '#F1F1F1',
         bgApp: '#F0F4C3',
         statusEmpty: '#A5D6A7',
-        statusDone: '#4CAF50',
+        statusDone: '#3C8000',
         statusInProgress: '#222222',
         textLight: '#FFFFFF',
         textDark: '#1B5E20',

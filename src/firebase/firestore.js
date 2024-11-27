@@ -5,8 +5,9 @@ import {
   addDoc, 
   updateDoc, 
   deleteDoc, 
-  getDocs, 
+  getDocs,
   getDoc,
+  setDoc,
   query,
   where,
   serverTimestamp,
@@ -22,6 +23,68 @@ const formatTimestamp = (timestamp) => {
     day: 'numeric',
     year: 'numeric'
   });
+};
+
+// User Profile Functions
+export const createUserProfile = async (userData) => {
+  try {
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+      throw new Error('User not authenticated. Please sign in.');
+    }
+
+    await setDoc(doc(db, 'users', userId), {
+      displayName: userData.displayName || '',
+      photoURL: userData.photoURL || '',
+      email: auth.currentUser.email,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+  } catch (error) {
+    console.error('Error creating user profile:', error);
+    throw error;
+  }
+};
+
+export const updateUserProfile = async (userData) => {
+  try {
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+      throw new Error('User not authenticated. Please sign in.');
+    }
+
+    await updateDoc(doc(db, 'users', userId), {
+      ...userData,
+      updatedAt: serverTimestamp()
+    });
+  } catch (error) {
+    console.error('Error updating user profile:', error);
+    throw error;
+  }
+};
+
+export const getUserProfile = async () => {
+  try {
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+      throw new Error('User not authenticated. Please sign in.');
+    }
+
+    const userDoc = await getDoc(doc(db, 'users', userId));
+    if (!userDoc.exists()) {
+      return null;
+    }
+
+    const userData = userDoc.data();
+    return {
+      ...userData,
+      createdAt: formatTimestamp(userData.createdAt),
+      updatedAt: formatTimestamp(userData.updatedAt)
+    };
+  } catch (error) {
+    console.error('Error getting user profile:', error);
+    throw error;
+  }
 };
 
 // Get all checklists for current user
