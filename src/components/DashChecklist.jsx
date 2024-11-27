@@ -138,7 +138,7 @@ export default function DashChecklist({ sortOrder, statusFilter, searchTerm }) {
                   <motion.div
                     key={item.id}
                     className="rounded shadow-sm p-2 overflow-hidden"
-                    style={{ width: 155, backgroundColor: bgColor, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.5)' }}
+                    style={{ width: 179, backgroundColor: bgColor, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)' }}
                     variants={itemVariants}
                   >
                     <div className="font-bold text-nowrap overflow-hidden" style={{ fontSize: 15, width: 100, color:themeColors.textLight }}>
@@ -160,7 +160,7 @@ export default function DashChecklist({ sortOrder, statusFilter, searchTerm }) {
                     <div className="mb-1" style={{ height: 1, backgroundColor: themeColors.primary }}></div>
                     <Link to="/Checklist" state={{ checklist: item, tasks : item.todo }}>
                       {Empty ? (
-                        <div className={`rounded-md p-2 hover:bg-[${themeColors.overlay}] flex items-center justify-center`}  style={{ height: 70,"&hover::backgroundColor": themeColors.bgbutton1}}>
+                        <div className={`rounded-md p-2 flex items-center justify-center`}  style={{ height: 70,"&hover::backgroundColor": themeColors.bgbutton1}}>
                           <ReceiptAddLinear size="50" color={themeColors.bgbutton1} />
                         </div>
                       ) : (

@@ -18,7 +18,7 @@ export const SearchBar = ({ onSearch }) => {
   };
   
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-xs">
+    <form onSubmit={handleSubmit} className="w-full max-w-md">
       <div className={`flex items-center border-2 bg-[${themeColors.bgbutton1}] border-[${themeColors.primary}] rounded-full py-2 px-3`}  style={{ backgroundColor:themeColors.bgbutton1, borderColor:themeColors.primary}}>
         <div>
             <button

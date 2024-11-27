@@ -1,32 +1,28 @@
 const paletteData = [
-    { // Thème 1 - Couleurs de base
-        primary: '#EF476F', // Couleur principale (rouge vif)
-        secondary: '#26547C', // Couleur secondaire (bleu profond)
-        tertiary: '#FFD166', // Couleur tertiaire (jaune)
-
-        // bg
-        bgbutton1: '#FFFFFF',
-        bgApp: '#F0F0F0',
-
-        // Statuts spécifiques
-        statusEmpty: '#94A8B9', // Couleur pour "Empty"
-        statusDone: '#F4CBD5', // Couleur pour "Done"
-        statusInProgress: '#FFD166', // Couleur pour "In Progress"
-
-        // Couleurs de texte
-        textLight: '#FFFFFF', // Texte clair
-        textDark: '#000000', // Texte sombre
-        textHighlight: '#EF476F', // Texte en surbrillance
-
-        // Arrière-plans et overlays
-        overlay: 'rgba(0, 0, 0, 0.5)', // Overlay semi-transparent
-        popupBackground: '#e0e0e0bb', // Fond du popup
-        separator: '#FFFFFF', // Séparateur
-
-        // Bouton "Fermer"
-        closeButtonBackground: '#FFFFFF', // Fond du bouton
-        closeButtonColor: '#EF476F', // Couleur de l'icône du bouton "Fermer"
-    },
+    {
+        // Thème Default - Light and Bright
+        primary: '#000000', // Couleur principale (noir pur)
+        secondary: '#1C1C1C', // Couleur secondaire (gris très foncé)
+        tertiary: '#292929', // Couleur tertiaire (gris sombre)
+    
+        bgbutton1: '#E0E0E0', // Fond des boutons (blanc cassé)
+        bgApp: '#FFFFFF', // Fond de l'application (blanc pur)
+    
+        statusEmpty: '#F0F0F0', // Statut "Empty" (gris très clair)
+        statusDone: '#F8F8E8', // Statut "Done" (blanc pur)
+        statusInProgress: '#FFFFFF', // Statut "In Progress" (gris pâle)
+    
+        textLight: '#1C1C1C', // Texte clair (pour fond clair)
+        textDark: '#FFFFFF', // Texte sombre (pour fond sombre)
+        textHighlight: '#000000', // Texte en surbrillance (noir)
+    
+        overlay: 'rgba(0, 0, 0, 0.1)', // Overlay semi-transparent noir
+        popupBackground: '#1C1C1Cbb', // Fond du popup (gris très foncé)
+        separator: '#000000', // Séparateur (noir)
+    
+        closeButtonBackground: '#000000', // Fond du bouton "Fermer" (noir)
+        closeButtonColor: '#FFFFFF', // Couleur de l'icône du bouton "Fermer" (blanc)
+        },
     { // Thème 2 - Thème sombre
         primary: '#FFFFFF', // Couleur principale (noir profond)
         secondary: '#FFFFFF', // Couleur secondaire (gris foncé)
@@ -96,6 +92,34 @@ const paletteData = [
         closeButtonBackground: '#FFFFFF', // Fond du bouton "Fermer" (blanc)
         closeButtonColor: '#000000', // Couleur de l'icône du bouton "Fermer" (noir)
     },
+    { // Thème 1 - Couleurs de base
+        primary: '#EF476F', // Couleur principale (rouge vif)
+        secondary: '#26547C', // Couleur secondaire (bleu profond)
+        tertiary: '#FFD166', // Couleur tertiaire (jaune)
+
+        // bg
+        bgbutton1: '#FFFFFF',
+        bgApp: '#F0F0F0',
+
+        // Statuts spécifiques
+        statusEmpty: '#94A8B9', // Couleur pour "Empty"
+        statusDone: '#F4CBD5', // Couleur pour "Done"
+        statusInProgress: '#FFD166', // Couleur pour "In Progress"
+
+        // Couleurs de texte
+        textLight: '#FFFFFF', // Texte clair
+        textDark: '#000000', // Texte sombre
+        textHighlight: '#EF476F', // Texte en surbrillance
+
+        // Arrière-plans et overlays
+        overlay: 'rgba(0, 0, 0, 0.5)', // Overlay semi-transparent
+        popupBackground: '#e0e0e0bb', // Fond du popup
+        separator: '#FFFFFF', // Séparateur
+
+        // Bouton "Fermer"
+        closeButtonBackground: '#FFFFFF', // Fond du bouton
+        closeButtonColor: '#EF476F', // Couleur de l'icône du bouton "Fermer"
+    },
     { // Thème 5 - Bélier (Aries)
         primary: '#FF5733', // Rouge éclatant
         secondary: '#900C3F', // Bordeaux
@@ -118,7 +142,7 @@ const paletteData = [
         primary: '#4CAF50', // Vert nature
         secondary: '#8BC34A', // Vert clair
         tertiary: '#795548', // Brun terre
-        bgbutton1: '#D7CCC8',
+        bgbutton1: '#F1F1F1',
         bgApp: '#F0F4C3',
         statusEmpty: '#A5D6A7',
         statusDone: '#4CAF50',

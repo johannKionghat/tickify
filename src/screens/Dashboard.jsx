@@ -20,7 +20,7 @@ export default function Dashboard() {
         setStatusFilter={setStatusFilter}
       />
     </div>
-    <div className="flex flex-col h-screen container p-4" style={{ paddingTop: 70 }}>
+    <div className="flex flex-col h-screen p-4" style={{ paddingTop: 70 }}>
       <div className='flex justify-center w-full mt-4'>
       <SearchBar onSearch={handleSearch} /> 
      </div>
