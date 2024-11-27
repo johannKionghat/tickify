@@ -202,7 +202,7 @@ export default function Checklist() {
                         >
                           <StatusLinear size="20" color={themeColors.primary} className="flex-shrink-0 mt-1" />
                         </motion.div>
-                        <p className="text-sm  font-medium" style={{color:themeColors.secondary}}>{task.title}</p>
+                        <p className="text-sm  font-medium" style={{color:themeColors.primary}}>{task.title}</p>
                       </div>
                     </motion.li>
                   ))}
@@ -251,7 +251,7 @@ export default function Checklist() {
                         >
                           <TickCircleLinear size="20" color={themeColors.primary} className="flex-shrink-0 mt-1" />
                         </motion.div>
-                        <p className="text-sm font-medium line-through" style={{color:themeColors.secondary}}>{task.title}</p>
+                        <p className="text-sm font-medium line-through" style={{color:themeColors.primary}}>{task.title}</p>
                       </div>
                     </motion.li>
                   ))}

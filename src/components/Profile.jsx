@@ -3,6 +3,9 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../firebase/config';
+import { useTheme } from '../theme/ThemeContext';
+import  { UserOctagonLinear, CameraLinear, ActivityLinear, SmsLinear, CalendarLinear } from 'react-iconsax-icons';
+import NavChecklist from './NavChecklist';
 
 export default function Profile() {
     const [displayName, setDisplayName] = useState('');
@@ -10,40 +13,22 @@ export default function Profile() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
     const [success, setSuccess] = useState('');
-    const { user, updateUserProfile } = useAuth();
+    const [isEditing, setIsEditing] = useState(false);
+    const { user, updateUserProfile, logout } = useAuth();
+    const { themeColors } = useTheme();
     const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchUserProfile() {
-            if (!user) {
-                setLoading(false);
-                return;
-            }
-
             try {
-                // Try to get existing user profile
-                const userDocRef = doc(db, 'users', user.uid);
-                const userDoc = await getDoc(userDocRef);
-
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
                 if (userDoc.exists()) {
                     const data = userDoc.data();
-                    setDisplayName(data.displayName || user.displayName || '');
-                    setPhotoURL(data.photoURL || user.photoURL || '');
-                } else {
-                    // If no profile exists, create one with default values
-                    const defaultData = {
-                        displayName: user.displayName || '',
-                        photoURL: user.photoURL || '',
-                        email: user.email,
-                        createdAt: new Date().toISOString()
-                    };
-                    await setDoc(userDocRef, defaultData);
-                    setDisplayName(defaultData.displayName);
-                    setPhotoURL(defaultData.photoURL);
+                    setDisplayName(data.displayName || '');
+                    setPhotoURL(data.photoURL || '');
                 }
             } catch (err) {
-                console.error('Error fetching profile:', err);
-                setError('Failed to load user profile. Please try again later.');
+                setError('Failed to load user profile');
             }
             setLoading(false);
         }
@@ -53,26 +38,17 @@ export default function Profile() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-
-        if (!user) {
-            setError('No user found. Please log in again.');
-            return;
-        }
-
         try {
             setError('');
             setSuccess('');
             setLoading(true);
 
-            // Update Firebase Auth profile
             await updateUserProfile({
                 displayName,
                 photoURL
             });
 
-            // Update Firestore profile
-            const userDocRef = doc(db, 'users', user.uid);
-            await setDoc(userDocRef, {
+            await setDoc(doc(db, 'users', user.uid), {
                 displayName,
                 photoURL,
                 email: user.email,
@@ -80,115 +56,223 @@ export default function Profile() {
             }, { merge: true });
 
             setSuccess('Profile updated successfully!');
+            setIsEditing(false);
         } catch (err) {
-            console.error('Error updating profile:', err);
             setError('Failed to update profile: ' + err.message);
         }
         setLoading(false);
     }
 
-    if (loading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-900">
-                <div className="text-white text-xl">Loading...</div>
-            </div>
-        );
+    async function handleLogout() {
+        try {
+            await logout();
+            navigate('/login');
+        } catch (err) {
+            setError('Failed to log out: ' + err.message);
+        }
     }
 
-    if (!user) {
+    if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-900">
-                <div className="text-white text-xl">Please log in to view your profile.</div>
+            <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: themeColors.bgApp }}>
+                <div className="animate-pulse text-xl" style={{ color: themeColors.primary }}>Loading...</div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8 bg-gray-800 p-8 rounded-lg shadow-lg">
-                <div>
-                    <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
-                        Profile Settings
-                    </h2>
-                    {photoURL && (
-                        <div className="mt-4 flex justify-center">
-                            <img
-                                src={photoURL}
-                                alt="Profile"
-                                className="h-24 w-24 rounded-full object-cover border-2 border-indigo-500"
-                                onError={(e) => {
-                                    e.target.src = 'https://via.placeholder.com/150';
-                                    setPhotoURL('');
-                                }}
-                            />
+        <div className="min-h-screen" style={{ backgroundColor: themeColors.bgApp}}>
+            <div className='fixed w-full'>
+                <NavChecklist />
+            </div>
+            {/* Main Content */}
+            <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" style={{paddingTop:70}}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Profile Card */}
+                    <div className="md:col-span-2">
+                        <div className="rounded-2xl shadow-lg overflow-hidden" style={{ backgroundColor: themeColors.bgbutton1}}>
+                            {/* Profile Header */}
+                            <div className="p-6">
+                                <div className="flex flex-col items-center">
+                                    {/* Profile Picture */}
+                                    <div className="relative mb-4">
+                                        <div className="w-24 h-24 rounded-full overflow-hidden border-4 shadow-inner"
+                                             style={{ borderColor: themeColors.primary }}>
+                                            {photoURL ? (
+                                                <img src={photoURL} alt="Profile" className="w-full h-full object-cover" />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center"
+                                                     style={{ backgroundColor: themeColors.bgApp }}>
+                                                    <UserOctagonLinear size={40} color={themeColors.primary}/>
+                                                </div>
+                                            )}
+                                        </div>
+                                        {isEditing && (
+                                            <button className="absolute bottom-0 right-0 p-2 rounded-full shadow-lg"
+                                                    style={{ backgroundColor: themeColors.primary }}>
+                                                <CameraLinear size={16} color= {themeColors.bgApp} />
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    {/* User Info */}
+                                    {!isEditing ? (
+                                        <div className="text-center">
+                                            <h2 className="text-xl font-semibold mb-1" style={{ color: themeColors.primary }}>
+                                                {displayName || 'Add your name'}
+                                            </h2>
+                                            <p className="text-sm opacity-80" style={{ color: themeColors.primary }}>{user.email}</p>
+                                        </div>
+                                    ) : null}
+                                </div>
+                            </div>
+
+                            {/* Edit Form */}
+                            {isEditing ? (
+                                <div className="px-6 pb-6">
+                                    <form onSubmit={handleSubmit} className="space-y-4">
+                                        <div>
+                                            <label className="block text-sm font-medium mb-1" style={{ color: themeColors.primary }}>
+                                                Display Name
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={displayName}
+                                                onChange={(e) => setDisplayName(e.target.value)}
+                                                className="w-full px-4 py-2 rounded-lg transition-colors"
+                                                style={{
+                                                    backgroundColor: themeColors.bgApp,
+                                                    color: themeColors.primary,
+                                                    borderColor: themeColors.separator
+                                                }}
+                                                placeholder="Enter your name"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium mb-1" style={{ color: themeColors.primary }}>
+                                                Photo URL
+                                            </label>
+                                            <input
+                                                type="url"
+                                                value={photoURL}
+                                                onChange={(e) => setPhotoURL(e.target.value)}
+                                                className="w-full px-4 py-2 rounded-lg transition-colors"
+                                                style={{
+                                                    backgroundColor: themeColors.bgApp,
+                                                    color: themeColors.primary,
+                                                    borderColor: themeColors.separator
+                                                }}
+                                                placeholder="Enter photo URL"
+                                            />
+                                        </div>
+                                        <div className="flex space-x-3">
+                                            <button
+                                                type="button"
+                                                onClick={() => setIsEditing(false)}
+                                                className="flex-1 py-2 rounded-lg border transition-colors"
+                                                style={{
+                                                    borderColor: themeColors.primary,
+                                                    color: themeColors.primary
+                                                }}
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                type="submit"
+                                                disabled={loading}
+                                                className="flex-1 py-2 rounded-lg transition-colors"
+                                                style={{
+                                                    backgroundColor: themeColors.primary,
+                                                    color: themeColors.bgApp
+                                                }}
+                                            >
+                                                Save Changes
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            ) : (
+                                <div className="px-6 pb-6">
+                                    <button
+                                        onClick={() => setIsEditing(true)}
+                                        className="w-full py-2 rounded-lg transition-colors"
+                                        style={{
+                                            backgroundColor: themeColors.primary,
+                                            color: themeColors.bgApp
+                                        }}
+                                    >
+                                        Edit Profile
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Status Messages */}
+                    {(error || success) && (
+                        <div className="md:col-span-2">
+                            {error && (
+                                <div className="mb-4 p-4 rounded-lg bg-red-100 border border-red-400 text-red-700">
+                                    {error}
+                                </div>
+                            )}
+                            {success && (
+                                <div className="mb-4 p-4 rounded-lg bg-green-100 border border-green-400 text-green-700">
+                                    {success}
+                                </div>
+                            )}
                         </div>
                     )}
-                    <p className="mt-2 text-center text-sm text-gray-400">
-                        {user.email}
-                    </p>
+
+                    {/* Account Info Card */}
+                    <div className="p-6 rounded-2xl shadow-lg" style={{ backgroundColor: themeColors.bgbutton1 }}>
+                        <div className="flex items-center space-x-4 mb-6">
+                            <SmsLinear size="30" color={themeColors.primary} />
+                            <div>
+                                <h3 className="text-sm font-medium" style={{ color: themeColors.primary }}>Email Status</h3>
+                                <p className="text-sm opacity-80" style={{ color: themeColors.primary }}>
+                                    {user.emailVerified ? 'Verified' : 'Not Verified'}
+                                </p>
+                            </div>
+                        </div>
+                        <div className="flex items-center space-x-4">
+                            <CalendarLinear size="30" color={themeColors.primary} />
+                            <div>
+                                <h3 className="text-sm font-medium" style={{ color: themeColors.primary }}>Member Since</h3>
+                                <p className="text-sm opacity-80" style={{ color: themeColors.primary }}>
+                                    {new Date(user.metadata.creationTime).toLocaleDateString()}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Activity Card */}
+                    <div className="p-6 rounded-2xl shadow-lg" style={{ backgroundColor: themeColors.bgbutton1 }}>
+                        <div className="flex items-center space-x-4">
+                            <ActivityLinear size="30" color={themeColors.primary} />
+                            <div>
+                                <h3 className="text-sm font-medium" style={{ color: themeColors.primary }}>Last Sign In</h3>
+                                <p className="text-sm opacity-80" style={{ color: themeColors.primary }}>
+                                    {new Date(user.metadata.lastSignInTime).toLocaleString()}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Logout Button */}
+                    <div className="md:col-span-2">
+                        <button
+                            onClick={handleLogout}
+                            className="w-full py-3 rounded-lg transition-colors"
+                            style={{
+                                backgroundColor: themeColors.primary,
+                                color: themeColors.bgbutton1
+                            }}
+                        >
+                            Sign Out
+                        </button>
+                    </div>
                 </div>
-
-                {error && (
-                    <div className="bg-red-500 text-white p-3 rounded-md text-center">
-                        {error}
-                    </div>
-                )}
-                {success && (
-                    <div className="bg-green-500 text-white p-3 rounded-md text-center">
-                        {success}
-                    </div>
-                )}
-
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-                    <div className="rounded-md shadow-sm -space-y-px">
-                        <div>
-                            <label htmlFor="display-name" className="sr-only">
-                                Display Name
-                            </label>
-                            <input
-                                id="display-name"
-                                name="display-name"
-                                type="text"
-                                required
-                                className="appearance-none rounded-t-md relative block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 text-white bg-gray-700 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                placeholder="Display Name"
-                                value={displayName}
-                                onChange={(e) => setDisplayName(e.target.value)}
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="photo-url" className="sr-only">
-                                Photo URL
-                            </label>
-                            <input
-                                id="photo-url"
-                                name="photo-url"
-                                type="url"
-                                className="appearance-none rounded-b-md relative block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 text-white bg-gray-700 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                placeholder="Photo URL (optional)"
-                                value={photoURL}
-                                onChange={(e) => setPhotoURL(e.target.value)}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="flex items-center justify-between space-x-4">
-                        <button
-                            type="button"
-                            onClick={() => navigate('/dashboard')}
-                            className="group relative flex-1 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                        >
-                            Back to Dashboard
-                        </button>
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="group relative flex-1 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        >
-                            {loading ? 'Saving...' : 'Save Changes'}
-                        </button>
-                    </div>
-                </form>
             </div>
         </div>
     );

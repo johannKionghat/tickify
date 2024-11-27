@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
-import { useTheme } from '../theme/ThemeContext';
 
 export default function PasswordReset() {
     const [email, setEmail] = useState('');
@@ -9,7 +8,6 @@ export default function PasswordReset() {
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
     const { resetPassword } = useAuth();
-    const { themeColors } = useTheme();
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -19,7 +17,7 @@ export default function PasswordReset() {
             setError('');
             setLoading(true);
             await resetPassword(email);
-            setMessage('Check your inbox for password reset instructions');
+            setMessage('Check your inbox for further instructions');
         } catch (err) {
             setError('Failed to reset password: ' + err.message);
         }
@@ -27,40 +25,26 @@ export default function PasswordReset() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8" 
-             style={{ backgroundColor: themeColors.bgApp }}>
-            <div className="max-w-md w-full space-y-6 p-6 sm:p-8 rounded-2xl shadow-lg" 
-                 style={{ 
-                     backgroundColor: themeColors.bgbutton1,
-                     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
-                 }}>
+        <div className="min-h-screen flex items-center justify-center bg-gray-900">
+            <div className="max-w-md w-full space-y-8 p-8 bg-gray-800 rounded-lg shadow-lg">
                 <div>
-                    <h2 className="mt-4 text-center text-2xl sm:text-3xl font-bold" 
-                        style={{ color: themeColors.primary }}>
+                    <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
                         Reset Password
                     </h2>
-                    <p className="mt-2 text-center text-sm" 
-                       style={{ color: themeColors.primary }}>
-                        Enter your email to receive reset instructions
-                    </p>
                 </div>
-
                 {error && (
-                    <div className="text-sm sm:text-base bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded relative">
+                    <div className="bg-red-500 text-white p-3 rounded-md">
                         {error}
                     </div>
                 )}
-
                 {message && (
-                    <div className="text-sm sm:text-base bg-green-100 border border-green-400 text-green-700 px-3 py-2 rounded relative">
+                    <div className="bg-green-500 text-white p-3 rounded-md">
                         {message}
                     </div>
                 )}
-
-                <form className="mt-6 space-y-5" onSubmit={handleSubmit}>
+                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
                     <div>
-                        <label htmlFor="email" className="block text-sm font-medium mb-1" 
-                               style={{ color: themeColors.primary }}>
+                        <label htmlFor="email" className="sr-only">
                             Email address
                         </label>
                         <input
@@ -68,13 +52,8 @@ export default function PasswordReset() {
                             name="email"
                             type="email"
                             required
-                            className="block w-full px-3 py-2 rounded-xl shadow-sm focus:outline-none focus:ring-2 transition-colors text-sm sm:text-base"
-                            style={{
-                                backgroundColor: themeColors.bgApp,
-                                color: themeColors.primary,
-                                borderColor: themeColors.separator
-                            }}
-                            placeholder="Enter your email"
+                            className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 text-white bg-gray-700 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                            placeholder="Email address"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
@@ -84,32 +63,23 @@ export default function PasswordReset() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full flex justify-center py-2.5 px-4 rounded-xl text-sm font-medium transition-opacity hover:opacity-80"
-                            style={{ 
-                                backgroundColor: themeColors.primary,
-                                color: themeColors.bgApp
-                            }}
+                            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
                             Reset Password
                         </button>
                     </div>
                 </form>
 
-                <div className="flex flex-col sm:flex-row justify-center gap-4 text-center mt-6">
-                    <p className="text-sm" style={{ color: themeColors.primary }}>
-                        Remember your password?{' '}
-                        <Link to="/login" 
-                              className="font-medium hover:opacity-80 transition-opacity" 
-                              style={{ color: themeColors.primary }}>
-                            Sign in
+                <div className="text-center space-y-2">
+                    <p className="text-sm text-gray-400">
+                        <Link to="/login" className="text-indigo-400 hover:text-indigo-300">
+                            Back to Login
                         </Link>
                     </p>
-                    <p className="text-sm" style={{ color: themeColors.primary }}>
+                    <p className="text-sm text-gray-400">
                         Need an account?{' '}
-                        <Link to="/signup" 
-                              className="font-medium hover:opacity-80 transition-opacity" 
-                              style={{ color: themeColors.primary }}>
-                            Sign up
+                        <Link to="/signup" className="text-indigo-400 hover:text-indigo-300">
+                            Sign Up
                         </Link>
                     </p>
                 </div>

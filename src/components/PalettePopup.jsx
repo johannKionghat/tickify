@@ -9,7 +9,8 @@ export const PalettePopup = ({ onClose }) => {
   const palettePreview = [
     { name: "Bright", colors: ['#020202', '#F8F8E8', '#FFFFFF'] },
     { name: "Dark", colors: ['#FFFFFF', '#333333', '#FFC107'] },
-    { name: "Ocean", colors: ['#A8DADC', '#457B9D', '#F4A261'] },
+    { name: "Blue", colors: ['#F3F6F8', '#FFFFFF', '#0077B5'] },
+    { name: "Green", colors: ['#DCF8C6', '#075E54', '#25D366'] },
     { name: "Monochrome", colors: ['#FFFFFF', '#1C1C1C', '#C0C0C0'] },
     { name: "Rose", colors: ['#EF476F', '#26547C', '#FFD166'] },
     { name: "Aries", colors: ['#FF5733', '#900C3F', '#FFC300'] },
@@ -32,11 +33,11 @@ export const PalettePopup = ({ onClose }) => {
       ></div>
       
       <div 
-        className="relative overflow-hidden rounded-lg p-6 max-w-md w-full mx-4 shadow-xl transform transition-all"
+        className="relative overflow-hidden rounded-lg p-3 max-w-md w-full mx-4 shadow-xl transform transition-all"
         style={{ backgroundColor: themeColors.popupBackground, height:350 }}
       >
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="text-xl font-semibold" style={{ color: themeColors.primary }}>
+        <div className="flex justify-between items-center mb-1">
+          <h3 className="text-xl font-semibold" style={{ color: themeColors.bgApp }}>
             Choose Theme
           </h3>
           <button
@@ -46,12 +47,12 @@ export const PalettePopup = ({ onClose }) => {
           >
             <CloseCircleLinear
               size="24"
-              color={themeColors.closeButtonColor}
+              color={themeColors.bgApp}
             />
           </button>
         </div>
 
-        <div className="grid overflow-y-scroll scrollbar-hide grid-cols-2 gap-4 p-2 sm:grid-cols-3" style={{ height: 250 }}>
+        <div className="grid overflow-y-scroll scrollbar-hide grid-cols-2 gap-4 rounded-lg sm:grid-cols-3" style={{ height: 280 }}>
           {palettePreview.map((palette, index) => (
             <button
               key={index}

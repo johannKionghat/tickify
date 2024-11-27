@@ -46,28 +46,53 @@ const paletteData = [
         closeButtonBackground: '#343A40',
         closeButtonColor: '#17A2B8', 
     },
-    { // Thème 3 - Couleurs pastel
-        primary: '#A8DADC', // Couleur principale (vert d'eau)
-        secondary: '#457B9D', // Couleur secondaire (bleu doux)
-        tertiary: '#F4A261', // Couleur tertiaire (orange pastel)
+    { 
+        // Thème LinkedIn
+        primary: '#0077B5', // Couleur principale (bleu LinkedIn)
+        secondary: '#FFFFFF', // Couleur secondaire (blanc pur)
+        tertiary: '#F3F6F8', // Couleur tertiaire (gris clair pour les fonds)
 
-        bgbutton1: '#F1FAEE',
-        bgApp: '#F0F0F0',
+        bgbutton1: '#F2F2F2', // Fond des boutons (bleu foncé pour CTA)
+        bgApp: '#F3F6F8', // Fond de l'application (gris clair)
 
-        statusEmpty: '#A8A8A8', 
-        statusDone: '#81B29A', 
-        statusInProgress: '#F2CC8F',
+        statusEmpty: '#CCCCCC', // Statut "Empty" (gris neutre)
+        statusDone: '#0077B5', // Statut "Done" (bleu LinkedIn)
+        statusInProgress: '#005582', // Statut "In Progress" (bleu plus sombre)
 
-        textLight: '#FFFFFF', 
-        textDark: '#FFFFFF', 
-        textHighlight: '#E63946',
+        textLight: '#FFFFFF', // Texte clair (pour fond bleu)
+        textDark: '#212121', // Texte sombre (pour fond clair)
+        textHighlight: '#0077B5', // Texte en surbrillance (bleu LinkedIn)
 
-        overlay: 'rgba(255, 255, 255, 0.7)',
-        popupBackground: '#e0e0e0bb',
-        separator: '#457B9D',
+        overlay: 'rgba(0, 119, 181, 0.1)', // Overlay semi-transparent bleu
+        popupBackground: '#FFFFFF', // Fond du popup (blanc pur)
+        separator: '#E6E9EC', // Séparateur (gris clair)
 
-        closeButtonBackground: '#F1FAEE',
-        closeButtonColor: '#E63946',
+        closeButtonBackground: '#FFFFFF', // Fond du bouton "Fermer" (blanc)
+        closeButtonColor: '#0077B5', // Couleur de l'icône du bouton "Fermer" (bleu LinkedIn)
+    },
+    {
+        // Thème WhatsApp
+        primary: '#25D366', // Couleur principale (vert WhatsApp)
+        secondary: '#075E54', // Couleur secondaire (vert foncé)
+        tertiary: '#DCF8C6', // Couleur tertiaire (vert pâle pour les bulles de message)
+
+        bgbutton1: '#F2F2F2', // Fond des boutons (vert moyen)
+        bgApp: '#ECE5DD', // Fond de l'application (gris clair/beige)
+
+        statusEmpty: '#ECE5DD', // Statut "Empty" (beige clair)
+        statusDone: '#25D366', // Statut "Done" (vert WhatsApp)
+        statusInProgress: '#128C7E', // Statut "In Progress" (vert foncé)
+
+        textLight: '#FFFFFF', // Texte clair (pour fond vert)
+        textDark: '#303030', // Texte sombre (pour fond clair)
+        textHighlight: '#25D366', // Texte en surbrillance (vert WhatsApp)
+
+        overlay: 'rgba(7, 94, 84, 0.1)', // Overlay semi-transparent vert foncé
+        popupBackground: '#FFFFFF', // Fond du popup (blanc pur)
+        separator: '#CCCCCC', // Séparateur (gris neutre)
+
+        closeButtonBackground: '#FFFFFF', // Fond du bouton "Fermer" (blanc)
+        closeButtonColor: '#128C7E', // Couleur de l'icône du bouton "Fermer" (vert foncé)
     },
     { // Thème 4 - Dark and White
         primary: '#FFFFFF', // Couleur principale (blanc pur)

@@ -169,14 +169,14 @@ export default function DashChecklist({ sortOrder, statusFilter, searchTerm }) {
                             <div key={task.id} className="py-1">
                               {task.statut === 0 ? (
                                 <div className="flex gap-2 overflow-hidden">
-                                  <StatusLinear size="14" color={themeColors.primary} />
+                                  <StatusLinear size="14" color={themeColors.secondary} />
                                   <div className="overflow-hidden text-wrap font-bold" style={{ fontSize: 9.7, width: 100, color: themeColors.secondary }}>
                                     {task.title}
                                   </div>
                                 </div>
                               ) : (
                                 <div className="flex gap-2 ">
-                                  <TickCircleLinear size="14" color={themeColors.primary} />
+                                  <TickCircleLinear size="14" color={themeColors.secondary} />
                                   <div className="overflow-hidden text-wrap line-through font-bold" style={{ fontSize: 9.7, width: 100, color: themeColors.secondary }}>
                                     {task.title}
                                   </div>

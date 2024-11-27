@@ -145,7 +145,7 @@ export default function Formulaire() {
                 <div className={`flex items-center border-2 border-[${themeColors.primary}] rounded-md`} style={{borderColor:themeColors.primary}}>
                   <input
                     id="date"
-                    className="flex-grow p-2 font-bold rounded-md focus:outline-none"
+                    className="flex-grow p-2 font-bold rounded-l-md focus:outline-none"
                     style={{color:themeColors.primary, backgroundColor:themeColors.bgbutton1}}
                     type="datetime"
                     value={currentDate}
@@ -201,7 +201,7 @@ export default function Formulaire() {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <AddSquareLinear size="24" color={themeColors.tertiary}/>
+                  <AddSquareLinear size="24" color={themeColors.primary}/>
                 </motion.button>
               </motion.div>
 
@@ -233,7 +233,7 @@ export default function Formulaire() {
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                     >
-                      <TrashLinear size="24" color={themeColors.tertiary}/>
+                      <TrashLinear size="24" color={themeColors.primary}/>
                     </motion.button>
                   </motion.div>
                 ))}
