@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { FilterSearchLinear, Setting4Linear, UserOctagonLinear, ColorSwatchLinear, LogoutLinear, CoffeeLinear, Send1Linear } from 'react-iconsax-icons'
+import { FilterSearchLinear, Setting4Linear, UserOctagonLinear, ColorSwatchLinear, LogoutLinear, CoffeeLinear, Send1Linear, CopyrightLinear } from 'react-iconsax-icons'
 import { Link, useNavigate } from 'react-router-dom'
 import { FilterPopup } from './FilterPopup';
 import { PalettePopup } from './PalettePopup';
@@ -14,6 +14,7 @@ export default function Nav({ sortOrder, setSortOrder, statusFilter, setStatusFi
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isCoffeePopupOpen, setIsCoffeePopupOpen] = useState(false);
   const [isBugReportOpen, setIsBugReportOpen] = useState(false);
+  const [isCopyrightOpen, setIsCopyrightOpen] = useState(false);
   const [bugReport, setBugReport] = useState({ email: '', description: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
@@ -23,6 +24,7 @@ export default function Nav({ sortOrder, setSortOrder, statusFilter, setStatusFi
   const settingsRef = useRef(null);
   const coffeePopupRef = useRef(null);
   const bugReportRef = useRef(null);
+  const copyrightRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -34,6 +36,9 @@ export default function Nav({ sortOrder, setSortOrder, statusFilter, setStatusFi
       }
       if (bugReportRef.current && !bugReportRef.current.contains(event.target)) {
         setIsBugReportOpen(false);
+      }
+      if (copyrightRef.current && !copyrightRef.current.contains(event.target)) {
+        setIsCopyrightOpen(false);
       }
     };
 
@@ -52,6 +57,7 @@ export default function Nav({ sortOrder, setSortOrder, statusFilter, setStatusFi
     setIsSettingsOpen(false);
     setIsCoffeePopupOpen(false);
     setIsBugReportOpen(false);
+    setIsCopyrightOpen(false);
   }
 
   const togglePalette = () => {
@@ -59,25 +65,36 @@ export default function Nav({ sortOrder, setSortOrder, statusFilter, setStatusFi
     setIsSettingsOpen(false);
     setIsCoffeePopupOpen(false);
     setIsBugReportOpen(false);
+    setIsCopyrightOpen(false);
   }
 
   const handleSettingsClick = () => {
     setIsSettingsOpen(!isSettingsOpen);
     setIsCoffeePopupOpen(false);
     setIsBugReportOpen(false);
+    setIsCopyrightOpen(false);
   }
 
   const toggleCoffeePopup = () => {
     setIsCoffeePopupOpen(!isCoffeePopupOpen);
     setIsSettingsOpen(false);
     setIsBugReportOpen(false);
+    setIsCopyrightOpen(false);
   }
 
   const toggleBugReport = () => {
     setIsBugReportOpen(!isBugReportOpen);
     setIsSettingsOpen(false);
     setIsCoffeePopupOpen(false);
+    setIsCopyrightOpen(false);
     setSubmitStatus({ type: '', message: '' });
+  }
+
+  const toggleCopyright = () => {
+    setIsCopyrightOpen(!isCopyrightOpen);
+    setIsSettingsOpen(false);
+    setIsCoffeePopupOpen(false);
+    setIsBugReportOpen(false);
   }
 
   const handleBugReportChange = (e) => {
@@ -134,6 +151,8 @@ export default function Nav({ sortOrder, setSortOrder, statusFilter, setStatusFi
       toggleCoffeePopup();
     } else if (option === 'bug') {
       toggleBugReport();
+    } else if (option === 'copyright') {
+      toggleCopyright();
     } else if (option === 'logout') {
       try {
         await logout();
@@ -208,6 +227,14 @@ export default function Nav({ sortOrder, setSortOrder, statusFilter, setStatusFi
                   >
                     <Send1Linear size="20" color={themeColors.primary} className="mr-2" />
                     <span>Report Bug</span>
+                  </button>
+                  <button
+                    onClick={() => handleOptionClick('copyright')}
+                    className="flex items-center px-4 py-2 w-full hover:opacity-80 transition-opacity"
+                    style={{ color: themeColors.primary }}
+                  >
+                    <CopyrightLinear size="20" color={themeColors.primary} className="mr-2" />
+                    <span>About</span>
                   </button>
                   <button
                     onClick={() => handleOptionClick('logout')}
@@ -327,6 +354,51 @@ export default function Nav({ sortOrder, setSortOrder, statusFilter, setStatusFi
                     <p className="mt-4 text-sm" style={{ color: themeColors.primary }}>
                       Thank you for helping make TickiTask better! 🐛
                     </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Copyright popup */}
+              {isCopyrightOpen && (
+                <div
+                  ref={copyrightRef}
+                  className="absolute right-0 mt-2 p-6 rounded-lg shadow-xl"
+                  style={{ backgroundColor: themeColors.bgbutton1, opacity: 0.97, width: 350 }}
+                >
+                  <div className="flex flex-col items-center text-center">
+                    <CopyrightLinear size="48" color={themeColors.primary} className="mb-4" />
+                    <h3 className="text-xl font-bold mb-2" style={{ color: themeColors.primary }}>
+                      About TickiTask
+                    </h3>
+                    <div className="space-y-4">
+                      <div className="p-4 rounded-lg" style={{ backgroundColor: themeColors.background }}>
+                        <p className="text-sm mb-2" style={{ color: themeColors.primary }}>
+                          Created by
+                        </p>
+                        <p className="font-bold" style={{ color: themeColors.primary }}>
+                          Johann Guewol Kionghat
+                        </p>
+                      </div>
+                      <div className="p-4 rounded-lg" style={{ backgroundColor: themeColors.background }}>
+                        <p className="text-sm mb-2" style={{ color: themeColors.primary }}>
+                          Version
+                        </p>
+                        <p className="font-bold" style={{ color: themeColors.primary }}>
+                          1.0.0
+                        </p>
+                      </div>
+                      <div className="p-4 rounded-lg" style={{ backgroundColor: themeColors.background }}>
+                        <p className="text-sm mb-2" style={{ color: themeColors.primary }}>
+                          Copyright
+                        </p>
+                        <p className="font-bold" style={{ color: themeColors.primary }}>
+                          2024 TickiTask
+                        </p>
+                        <p className="text-sm mt-2" style={{ color: themeColors.primary }}>
+                          All rights reserved
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
