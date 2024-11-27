@@ -42,11 +42,8 @@ ChartJS.register(
 export default function Profile() {
     const [displayName, setDisplayName] = useState('');
     const [photoURL, setPhotoURL] = useState('');
-    const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
-    const [success, setSuccess] = useState('');
     const [isEditing, setIsEditing] = useState(false);
-    const [profileData, setProfileData] = useState(null);
     const [statistics, setStatistics] = useState({
         totalChecklists: 0,
         completedChecklists: 0,
