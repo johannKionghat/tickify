@@ -280,7 +280,7 @@ export default function Nav({ sortOrder, setSortOrder, statusFilter, setStatusFi
                           placeholder="Your email address"
                           className="w-full p-3 rounded-lg mb-3"
                           style={{ 
-                            backgroundColor: themeColors.background,
+                            backgroundColor: themeColors.bgbutton1,
                             color: themeColors.primary,
                             border: `1px solid ${themeColors.primary}`
                           }}
@@ -293,7 +293,7 @@ export default function Nav({ sortOrder, setSortOrder, statusFilter, setStatusFi
                           placeholder="Describe the bug and steps to reproduce it..."
                           className="w-full p-3 rounded-lg resize-none"
                           style={{ 
-                            backgroundColor: themeColors.background,
+                            backgroundColor: themeColors.bgbutton1,
                             color: themeColors.primary,
                             border: `1px solid ${themeColors.primary}`,
                             minHeight: '120px'

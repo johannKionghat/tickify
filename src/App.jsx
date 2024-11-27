@@ -13,7 +13,6 @@ import Dashboard from './screens/Dashboard';
 import Formulaire from './screens/Formulaire';
 import Checklist from './screens/Checklist';
 import SignUp from './components/SignUp';
-import PasswordReset from './components/PasswordReset';
 import Profile from './components/Profile';
 import { ThemeProvider } from './theme/ThemeContext';
 import { useAuth } from './context/AuthContext';
@@ -36,7 +35,6 @@ function AppContent() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/reset-password" element={<PasswordReset />} />
           <Route
             path="/dashboard"
             element={
