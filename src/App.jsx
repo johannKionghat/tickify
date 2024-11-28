@@ -16,6 +16,7 @@ import SignUp from './components/SignUp';
 import Profile from './components/Profile';
 import { ThemeProvider } from './theme/ThemeContext';
 import { useAuth } from './context/AuthContext';
+import { PasswordReset } from './components/PasswordReset';
 
 // Protected Route component
 function PrivateRoute({ children }) {
@@ -34,6 +35,7 @@ function AppContent() {
       <div className='overflow-scroll' style={{backgroundColor: themeColors.bgApp, height: '100vh'}}>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/reset-password" element={<PasswordReset/>} />
           <Route path="/signup" element={<SignUp />} />
           <Route
             path="/dashboard"
