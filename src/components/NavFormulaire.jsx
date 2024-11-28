@@ -1,19 +1,23 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { CloseSquareLinear } from 'react-iconsax-icons'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { themeColors } from '../theme'
 
 export default function NavFormulaire() {
+  const navigate = useNavigate();
+  const back = useCallback(() => {
+    navigate(-1);
+  }, [navigate]);
   return (
     <nav >
           <div className="container mx-auto px-3 py-3">
             <div className="flex justify-between">
               <div className="flex">
-                <Link to="/">
-                <div className='p-2 rounded-full' style={{backgroundColor:themeColors.bgbutton1, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)'}}>
+                <div onClick={back} className='cursor-pointer'>
+                  <div className='p-2 rounded-full' style={{backgroundColor:themeColors.bgbutton1, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)'}}>
                 <CloseSquareLinear size="32" color={themeColors.primary}/>              
                 </div>
-                </Link>
+                </div>
               </div>
             </div>
           </div>

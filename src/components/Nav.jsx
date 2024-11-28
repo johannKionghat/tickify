@@ -164,7 +164,7 @@ export default function Nav({ sortOrder, setSortOrder, statusFilter, setStatusFi
   }
 
   return (
-    <nav>
+    <nav className="relative z-50">
       <div className="w-full max-w-7xl mx-auto">
         <div className="w-full mx-auto px-3 py-3 flex items-center justify-between">
           <div className="flex justify-between">
@@ -182,7 +182,7 @@ export default function Nav({ sortOrder, setSortOrder, statusFilter, setStatusFi
             >
               <FilterSearchLinear size="25" color={themeColors.primary}/>
             </div>
-            <div ref={settingsRef} className="relative">
+            <div ref={settingsRef} className="relative z-50">
               <div 
                 className='p-2 rounded-full cursor-pointer'
                 style={{backgroundColor:themeColors.bgbutton1, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)'}}
@@ -193,7 +193,7 @@ export default function Nav({ sortOrder, setSortOrder, statusFilter, setStatusFi
 
               {isSettingsOpen && (
                 <div
-                  className="absolute right-0 mt-2 py-2 w-48 rounded-lg shadow-xl"
+                  className="absolute right-0 mt-2 py-2 w-48 rounded-lg shadow-xl z-50"
                   style={{ backgroundColor: themeColors.bgbutton1 }}
                 >
                   <button

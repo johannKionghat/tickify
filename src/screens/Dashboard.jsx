@@ -12,7 +12,7 @@ export default function Dashboard() {
   };
   return (
     <>
-    <div className='fixed w-full'>
+    <div className='fixed w-full z-50'>
       <Nav 
         sortOrder={sortOrder}
         setSortOrder={setSortOrder}

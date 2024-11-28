@@ -13,10 +13,15 @@ export default function DashChecklist({ sortOrder, statusFilter, searchTerm }) {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [checklistToDelete, setChecklistToDelete] = useState(null);
   const [DataChecklist, setDataChecklist] = useState([]);
+  const [selectedChecklists, setSelectedChecklists] = useState([]);
+  const [selectionMode, setSelectionMode] = useState(false);
   const { themeColors } = useTheme();
 
-  const notifySuccess = () => toast.success('Checklist deleted successfully');
-  const notifyError = () => toast.error('Error deleting checklist');
+  const longPressTime = 500; // 500ms for long press
+  const [pressTimer, setPressTimer] = useState(null);
+
+  const notifySuccess = () => toast.success('Checklist(s) deleted successfully');
+  const notifyError = () => toast.error('Error deleting checklist(s)');
 
   const fetchChecklists = useCallback(async () => {
     try {
@@ -63,12 +68,19 @@ export default function DashChecklist({ sortOrder, statusFilter, searchTerm }) {
     applyFilters();
   }, [applyFilters, DataChecklist, sortOrder, statusFilter, searchTerm]);
 
-  const handleDelete = async (checklistId) => {
+  const handleDelete = async (checklistIds) => {
     try {
-      await deleteChecklist(checklistId);
+      if (Array.isArray(checklistIds)) {
+        for (const id of checklistIds) {
+          await deleteChecklist(id);
+        }
+      } else {
+        await deleteChecklist(checklistIds);
+      }
       notifySuccess();
       fetchChecklists(); // Refresh the list
       setShowConfirmation(false);
+      setSelectedChecklists([]);
     } catch (error) {
       console.error('Error deleting checklist:', error);
       notifyError();
@@ -76,7 +88,63 @@ export default function DashChecklist({ sortOrder, statusFilter, searchTerm }) {
   };
 
   const confirmDelete = async () => {
-    await handleDelete(checklistToDelete);
+    const toDelete = selectedChecklists.length > 0 ? selectedChecklists : checklistToDelete;
+    await handleDelete(toDelete);
+  };
+
+  const handleTouchStart = (e, checklistId) => {
+    const timer = setTimeout(() => {
+      setSelectionMode(true);
+      toggleChecklistSelection(checklistId);
+    }, longPressTime);
+    setPressTimer(timer);
+  };
+
+  const handleTouchEnd = () => {
+    if (pressTimer) {
+      clearTimeout(pressTimer);
+      setPressTimer(null);
+    }
+  };
+
+  const handleMouseDown = (e, checklistId) => {
+    const timer = setTimeout(() => {
+      setSelectionMode(true);
+      toggleChecklistSelection(checklistId);
+    }, longPressTime);
+    setPressTimer(timer);
+  };
+
+  const handleMouseUp = () => {
+    if (pressTimer) {
+      clearTimeout(pressTimer);
+      setPressTimer(null);
+    }
+  };
+
+  const toggleChecklistSelection = (checklistId) => {
+    setSelectedChecklists(prev => {
+      const newSelection = prev.includes(checklistId)
+        ? prev.filter(id => id !== checklistId)
+        : [...prev, checklistId];
+      
+      if (newSelection.length === 0) {
+        setSelectionMode(false);
+      }
+      return newSelection;
+    });
+  };
+
+  const exitSelectionMode = () => {
+    setSelectionMode(false);
+    setSelectedChecklists([]);
+  };
+
+  const handleContainerClick = (e) => {
+    // Only handle clicks directly on the container
+    if (e.target === e.currentTarget) {
+      exitSelectionMode();
+    }
   };
 
   const containerVariants = {
@@ -105,14 +173,15 @@ export default function DashChecklist({ sortOrder, statusFilter, searchTerm }) {
 
   if (isChecklist) {
     return (
-      <div className="mx-auto px-3 py-3 " >
-        <div className="flex-1 flex flex-col justify-center items-center mt-3">
+      <div className="mx-auto px-3 py-3 " onClick={handleContainerClick}>
+        <div className="flex-1 flex flex-col justify-center items-center mt-3" onClick={handleContainerClick}>
           <AnimatePresence>
             <motion.div
                 className='flex flex-wrap justify-center gap-2 w-full'
                 variants={containerVariants}
                 initial="hidden"
-                animate="visible">
+                animate="visible"
+                onClick={handleContainerClick}>
               {filteredChecklists.map((item, index) => {
                 const tasksForThisChecklist = item.todo;
                 const completedTasksCount = tasksForThisChecklist.filter(task => task.statut === 1).length;
@@ -136,12 +205,53 @@ export default function DashChecklist({ sortOrder, statusFilter, searchTerm }) {
                 return (
                   <motion.div
                     key={item.id}
-                    className="rounded shadow-sm p-2 overflow-hidden"
+                    className="rounded shadow-sm p-2 overflow-hidden relative"
                     style={{ width: 155, backgroundColor: bgColor, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)' }}
                     variants={itemVariants}
+                    onTouchStart={(e) => {
+                      e.stopPropagation();
+                      handleTouchStart(e, item.id);
+                    }}
+                    onTouchEnd={(e) => {
+                      e.stopPropagation();
+                      handleTouchEnd();
+                    }}
+                    onMouseDown={(e) => {
+                      e.stopPropagation();
+                      handleMouseDown(e, item.id);
+                    }}
+                    onMouseUp={(e) => {
+                      e.stopPropagation();
+                      handleMouseUp();
+                    }}
+                    onMouseLeave={handleMouseUp}
+                    onClick={(e) => e.stopPropagation()}
                   >
-                    <div className="font-bold text-nowrap overflow-hidden" style={{ fontSize: 15, width: 100, color:themeColors.textLight }}>
-                    {item.title}
+                    <AnimatePresence>
+                      {selectionMode && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.8 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute top-2 right-2 z-10"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={selectedChecklists.includes(item.id)}
+                            onChange={() => toggleChecklistSelection(item.id)}
+                            className="h-4 w-4"
+                            style={{ 
+                              accentColor: themeColors.primary
+                            }}
+                          />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                    <div className="flex justify-between items-start select-none" >
+                      <div className="font-bold text-nowrap overflow-hidden" style={{ fontSize: 15, width: 100, color:themeColors.textLight }}>
+                        {item.title}
+                      </div>
                     </div>
                     <div className="flex items-center justify-between mb-2">
                       <p className=" font-bold" style={{ fontSize: 8, width:50, color: themeColors.textLight }}>
@@ -198,7 +308,9 @@ export default function DashChecklist({ sortOrder, statusFilter, searchTerm }) {
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={() => {
-                          setChecklistToDelete(item.id);
+                          if (selectedChecklists.length === 0) {
+                            setChecklistToDelete(item.id);
+                          }
                           setShowConfirmation(true);
                         }}
                       >
@@ -226,19 +338,24 @@ export default function DashChecklist({ sortOrder, statusFilter, searchTerm }) {
           {showConfirmation && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
               <div className={`bg-[${themeColors.popupBackground}] p-4 rounded-lg shadow-lg`} style={{backgroundColor:themeColors.statusEmpty, color:themeColors.primary, opacity:0.9, width:300}}>
-                <p>Do you want to delete this checklist?</p>
+                <p>{selectedChecklists.length > 0 
+                    ? `Do you want to delete ${selectedChecklists.length} selected checklists?`
+                    : 'Do you want to delete this checklist?'}</p>
                 <div className="flex justify-end mt-4">
                   <button
                     className="mr-2 px-4 py-2 bg-gray-200 rounded-md"
-                    onClick={() => setShowConfirmation(false)}
+                    onClick={() => {
+                      setShowConfirmation(false);
+                      exitSelectionMode();
+                    }}
                   >
-                    Annuler
+                    Cancel
                   </button>
                   <button
                     className="px-4 py-2 bg-red-500 text-white rounded-md"
                     onClick={confirmDelete}
                   >
-                    Confirmer
+                    Confirm
                   </button>
                 </div>
               </div>
