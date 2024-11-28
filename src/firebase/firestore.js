@@ -249,7 +249,14 @@ export const updateTaskStatus = async (checklistId, taskId, newStatus) => {
       throw new Error('Unauthorized to update this task');
     }
 
+    // Check if task exists before updating
     const taskRef = doc(db, `checklists/${checklistId}/todo/${taskId}`);
+    const taskDoc = await getDoc(taskRef);
+    
+    if (!taskDoc.exists()) {
+      throw new Error('Task not found');
+    }
+
     await updateDoc(taskRef, {
       statut: newStatus
     });
